@@ -97,7 +97,8 @@
             نمایش خطای کوپن (فرض می‌کنیم خطا در views.py از session حذف و به context ارسال شده است)
             {% endcomment %}
             {% if coupon_error %}
-            <div class="alert alert-danger mt-3 mb-30 text-left direction-ltr" role="alert" style="direction: rtl; text-align: right;">
+            <div class="alert alert-danger mt-3 mb-30 text-left direction-ltr" role="alert"
+                 style="direction: rtl; text-align: right;">
                 {{ coupon_error }}
             </div>
             {% endif %}
@@ -133,7 +134,8 @@
                         <h5>Total</h5>
                         <h5 id="cart-final-total">{{ cart.get_final_price|floatformat:"0" }}</h5>
                     </div>
-                    <a id="btn-proceed-checkout" class="btn btn-block btn-primary font-weight-bold my-3 py-3" href="{% url 'checkout:checkout-detail' %}">Proceed
+                    <a id="btn-proceed-checkout" class="btn btn-block btn-primary font-weight-bold my-3 py-3"
+                       href="{% url 'checkout:checkout-detail' %}">Proceed
                         To Checkout</a>
                 </div>
             </div>

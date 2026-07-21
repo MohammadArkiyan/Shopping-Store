@@ -17,54 +17,58 @@ class Cart:
             self.db_cart, created = CartModel.objects.get_or_create(
                 user=self.request.user
             )
-
             session_cart_data = self.session.get('cart')
             if session_cart_data and len(session_cart_data) > 0:
                 for product_id, item_data in session_cart_data.items():
                     try:
                         product = Product.objects.get(id=product_id)
-
                     except Product.DoesNotExist:
                         continue
 
-                    quantity = item_data['quantity']
-                    price_snapshot = item_data['price']
+                    quantity = item_data.get('quantity', 1)
+
+                    # ✅ اصلاح: دریافت ایمن price و مدیریت مقادیر نامعتبر
+                    price_snapshot = item_data.get('price')
+                    if price_snapshot in [None, '', 'None']:
+                        # اگر قیمت معتبر نبود، از قیمت خود محصول استفاده کن
+                        price_snapshot = product.price
+
+                    try:
+                        price_decimal = Decimal(str(price_snapshot))
+                    except:
+                        # اگر تبدیل به Decimal شکست خورد، از قیمت محصول استفاده کن
+                        price_decimal = product.price
 
                     cart_item, created = CartItem.objects.get_or_create(
                         cart=self.db_cart,
                         product=product,
-
                         defaults={
                             'quantity': quantity,
-                            'price': Decimal(str(price_snapshot)),
+                            'price': price_decimal,
                         }
                     )
-
                     if not created:
                         cart_item.quantity += quantity
                         cart_item.save()
-
                 del self.session['cart']
                 self.session.modified = True
+
         # Session
         else:
             if not cart:
                 cart = {}
                 self.session['cart'] = cart
-
             self.cart = cart
+
         self.coupon_id = self.session.get('coupon_id')
 
     def add(self, product, quantity=1):
-
-        price_snapshot = product.price
-
+        price_snapshot = product.price  # ✅ اطمینان از Decimal بودن
         if self.request.user.is_authenticated:
             cart_item, created = CartItem.objects.get_or_create(
                 cart=self.db_cart,
                 product=product,
-                defaults={'quantity': quantity, 'price': price_snapshot}
-
+                defaults={'quantity': quantity, 'price': Decimal(str(price_snapshot))}  # ✅ تبدیل صریح
             )
             if not created:
                 cart_item.quantity += quantity
@@ -72,9 +76,9 @@ class Cart:
         else:
             product_id = str(product.id)
             if product_id not in self.cart:
-                self.cart[product_id] = {'quantity': 0, 'price': str(product.price)}
+                self.cart[product_id] = {'quantity': 0,
+                                         'price': str(Decimal(str(product.price)))}  # ✅ اطمینان از معتبر بودن
             self.cart[product_id]['quantity'] += quantity
-
             self.save()
 
     def decrement(self, product, quantity=1):
