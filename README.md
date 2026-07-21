@@ -218,8 +218,8 @@ This project is licensed under the MIT License — see the LICENSE file for deta
 **Mohammad Arkian**
 
 If you have any questions or suggestions, feel free to reach out via the Issues tab of this repository, or through:
-- Email: mohammadarkiyan21@gmail.com
-- GitHub: https://github.com/MohammadArkiyan
+- Email: [add your email here]
+- GitHub: [add your GitHub profile link here]
 
 <div align="right">
 
@@ -439,8 +439,8 @@ http://127.0.0.1:8000/admin
 **محمد ارکیان**
 
 اگر سوال یا پیشنهادی داشتید، از طریق بخش Issues همین ریپازیتوری یا اطلاعات تماس زیر با من در ارتباط باشید:
-- ایمیل: mohammadarkiyan21@gmail.com
-- گیت‌هاب: https://github.com/MohammadArkiyan
+- ایمیل: [ایمیل خود را اینجا وارد کنید]
+- گیت‌هاب: [لینک پروفایل گیت‌هاب خود را اینجا وارد کنید]
 
 <div align="right">
 
