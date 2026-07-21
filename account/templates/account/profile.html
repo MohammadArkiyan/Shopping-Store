@@ -1,0 +1,174 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %} User Profile {% endblock title %}
+
+{% block body %}
+
+<div class="container-fluid pt-5 pb-5">
+    <div class="row px-xl-5">
+        <div class="col-lg-12">
+
+            <h2 class="section-title position-relative text-uppercase mb-4">
+                <span class="bg-secondary pr-3">Profile Overview</span>
+            </h2>
+
+            <div class="bg-light p-30 mb-5">
+
+                <div class="row">
+                    <div class="col-md-4 mb-4 text-center">
+                        {% if profile.image %}
+                        <img class="img-fluid rounded-circle mb-3"
+                             src="{{ profile.image.url }}"
+                             alt="{{ request.user.username }}"
+                             style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #00EDE1;">
+                        {% else %}
+                        <img class="img-fluid rounded-circle mb-3"
+                             src="{% static 'img/user-default.png' %}"
+                             alt="Default User"
+                             style="width: 150px; height: 150px; object-fit: cover; border: 3px solid #00EDE1;">
+                        {% endif %}
+
+                        <h4>{{ request.user.first_name }} {{ request.user.last_name }}</h4>
+                        <p class="text-muted">@{{ request.user.username }}</p>
+                    </div>
+
+                    <div class="col-md-8">
+                        <ul class="list-group list-group-flush text-left">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa fa-key mr-2"></i> Username:</span>
+                                <span>{{ request.user.username }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa fa-envelope mr-2"></i> Email:</span>
+                                <span>{{ request.user.email }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                <span><i class="fa fa-calendar-alt mr-2"></i> Date Joined:</span>
+                                <span>{{ request.user.date_joined|date:"M d, Y" }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <hr class="mt-4 mb-4">
+
+                <h3 class="section-title position-relative text-uppercase mb-4 mt-5">
+                    <span class="bg-secondary pr-3">Edit Information & Photo</span>
+                </h3>
+
+                <form method="POST" enctype="multipart/form-data" class="text-left">
+                    {% csrf_token %}
+
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="alert alert-success">{{ message }}</div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ u_form.first_name.id_for_label }}">First Name</label>
+                            {{ u_form.first_name }}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ u_form.last_name.id_for_label }}">Last Name</label>
+                            {{ u_form.last_name }}
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label for="{{ u_form.email.id_for_label }}">Email Address</label>
+                            {{ u_form.email }}
+                        </div>
+                    </div>
+
+                    <hr class="mb-4">
+
+                    <div class="form-group mb-4">
+                        <label for="{{ p_form.image.id_for_label }}" class="form-label">📸 New Profile Image</label>
+
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="mr-3"> {% if p_form.image.value %}
+                                <img id="current-profile-image" src="{{ p_form.image.value.url }}" alt="Current Image"
+                                     class="rounded-circle border"
+                                     style="width: 80px; height: 80px; object-fit: cover;">
+                                {% else %}
+                                <div id="current-profile-image"
+                                     class="rounded-circle bg-light d-flex align-items-center justify-content-center border"
+                                     style="width: 80px; height: 80px;">
+                                    <i class="fa fa-user-circle text-secondary" style="font-size: 3rem;"></i>
+                                </div>
+                                {% endif %}
+                            </div>
+
+                            <div id="new-image-preview-container" class="mr-3 d-none">
+                                <img id="new-image-preview" src="#" alt="New Preview"
+                                     class="rounded-circle border border-primary"
+                                     style="width: 80px; height: 80px; object-fit: cover;">
+                            </div>
+
+                            <div>
+                                <div class="d-none">
+                                    {{ p_form.image }}
+                                </div>
+                                <button type="button" class="btn btn-primary btn-sm" id="custom-image-upload-button">
+                                    <i class="fa fa-upload mr-2"></i> Choose New Image
+                                </button>
+                                <small id="selected-file-name" class="form-text text-muted mt-2 d-block">No file chosen.</small>
+                            </div>
+                        </div>
+
+                        {% if p_form.image.value %}
+                        <small class="form-text text-muted">
+                            **Current File:** <a href="{{ p_form.image.value.url }}" target="_blank" class="text-primary">
+                            {{ p_form.image.value.name }}</a>
+                            <span class="text-danger">(Select a new file to change)</span>
+                        </small>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const imageInput = document.getElementById('id_image');
+        const customButton = document.getElementById('custom-image-upload-button');
+        const selectedFileName = document.getElementById('selected-file-name');
+        const newImagePreview = document.getElementById('new-image-preview');
+        const newImagePreviewContainer = document.getElementById('new-image-preview-container');
+        const currentProfileImage = document.getElementById('current-profile-image');
+
+        if (imageInput && customButton) {
+            customButton.addEventListener('click', function() {
+                imageInput.click();
+            });
+
+            imageInput.addEventListener('change', function(e) {
+                if (e.target.files.length > 0) {
+                    const file = e.target.files[0];
+                    selectedFileName.innerText = `Selected file: ${file.name}`;
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        newImagePreview.src = event.target.result;
+                        if (currentProfileImage) currentProfileImage.classList.add('d-none');
+                        newImagePreviewContainer.classList.remove('d-none');
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    selectedFileName.innerText = 'No file chosen.';
+                    newImagePreviewContainer.classList.add('d-none');
+                    if (currentProfileImage) currentProfileImage.classList.remove('d-none');
+                }
+            });
+        }
+    });
+</script>
+
+
+{% endblock body %}

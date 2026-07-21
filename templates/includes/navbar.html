@@ -1,0 +1,121 @@
+<div class="container-fluid bg-dark mb-30 navbar-wrapper">
+    <div class="row px-xl-5 align-items-center">
+
+        <div class="col-lg-3 col-6">
+            <a class="btn d-flex align-items-center justify-content-between bg-primary w-100 categories-btn"
+               style="height: 65px; padding: 0 30px;  height: 73px">
+                <h6 class="text-dark m-0">
+                    <i class="fa fa-bars mr-2"></i>Categories
+                </h6>
+                <i class="fa fa-angle-down text-dark"></i>
+            </a>
+            <nav id="navbar-vertical"
+                 class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 bg-light"
+                 style="width: calc(100% - 30px); z-index: 999;">
+                <div class="navbar-nav w-100 ">
+                    {% for category in featured_categories %}
+                    <a href="#" class="nav-item nav-link">{{ category.title }}</a>
+                    {% endfor %}
+
+                </div>
+            </nav>
+        </div>
+
+        <div class="col-lg-9 col-6">
+            <nav class="navbar navbar-expand-lg bg-dark navbar-dark py-3 py-lg-0 px-0">
+                <button type="button" class="navbar-toggler ml-auto" data-toggle="collapse"
+                        data-target="#navbarCollapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
+                    <div class="navbar-nav mr-auto py-0 align-items-center">
+                        <a href="{% url 'shopping_store:index' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'index' %}active{% endif %}">Home</a>
+                        <a href="{% url 'shop:shop' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'shop' %}active{% endif %}">Shop</a>
+
+                        <a href="{% url 'cart:detail' %}"
+                           class="nav-item nav-link {% if request.resolver_match.url_name == 'detail' %}active{% endif %}">Shopping
+                            Card</a>
+
+                        <div class="nav-item dropdown" id="pages-out">
+                            <a href="#"
+                               class="nav-link dropdown-toggle
+                                {% if request.resolver_match.url_name == 'checkout-detail' %}active{% endif %}
+                                {% if request.resolver_match.url_name == 'contact-detail' %}active{% endif %}"
+                               data-toggle="dropdown">Pages <i
+                                    class="fa fa-angle-down mt-1"></i></a>
+                            <div class="dropdown-menu bg-primary rounded-0 border-0 m-0">
+                                <a href="{% url 'checkout:checkout-detail' %}" id="btn-checkout-top"
+                                   class="dropdown-item {% if request.resolver_match.url_name == 'checkout-detail' %}active{% endif %}">Checkout</a>
+                                <a href="{% url 'contact:contact-detail' %}" id="btn-contact-top"
+                                   class="dropdown-item {% if request.resolver_match.url_name == 'contact-detail' %}active{% endif %}">Contact</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
+                        <a href="/cart" class="btn px-0 ml-3">
+                            <i class="fas fa-shopping-cart text-primary"></i>
+                            <span id="cart-total-qty"
+                                  class="badge text-secondary border border-secondary rounded-circle"
+                                  style="padding-bottom: 2px;">0</span>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Navbar End -->
+<script>
+    document.querySelector('.categories-btn').addEventListener('click', function () {
+        document.getElementById('navbar-vertical').classList.toggle('show');
+    });
+
+
+
+
+
+if (data.ok) {
+    localStorage.setItem('cartQty', data.total_qty);
+    const cartBadge = document.getElementById('cart-total-qty');
+    if (cartBadge) {
+        cartBadge.innerText = data.total_qty;
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const storedQty = localStorage.getItem('cartQty');
+    if (storedQty) {
+        const cartBadge = document.getElementById('cart-total-qty');
+        if (cartBadge) {
+            cartBadge.innerText = storedQty;
+        }
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/your-url-to-get-cart-qty', {
+        method: 'GET',
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.ok) {
+            const cartBadge = document.getElementById('cart-total-qty');
+            if (cartBadge) {
+                cartBadge.innerText = data.cart_qty;
+            }
+        }
+    });
+});
+
+</script>
+
+
+

@@ -1,0 +1,147 @@
+<div class="topbar-info">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-lg-6 d-none d-lg-block">
+                <div class="topbar-info-links">
+                    <a href="#about">About Us</a>
+                    <a href="#contact">Contact</a>
+                    <a href="#help">Help Center</a>
+                    <a href="#faq">FAQs</a>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <div class="d-flex align-items-center justify-content-end gap-3">
+
+                    <div class="account-dropdown">
+                        <button class="account-btn" type="button" id="accountBtn" aria-expanded="false">
+                            <i class="fas fa-user user-icon"></i>
+                            <span class="d-none d-sm-inline">My Account</span>
+                            <i class="fas fa-chevron-down arrow-icon"></i>
+                        </button>
+
+                        <div class="account-dropdown-menu" id="accountMenu">
+                            {% if user.is_authenticated %}
+                            <a href="{% url 'account:profile' %}"><i class="fas fa-user-circle me-2 mr-1"></i> Profile</a>
+                            <a href="#wishlist"><i class="fas fa-heart me-2 mr-1"></i> Wishlist</a>
+                            <hr class="dropdown-divider">
+                            <a id="logout-top" href="{% url 'account:user_logout' %}"><i class="fas fa-sign-out-alt me-2 mr-1"></i> Logout</a>
+
+                            {% else %}
+                            <a href="{% url 'account:user_login' %}"><i class="fas fa-user-circle me-2 mr-1"></i>
+                                Login</a>
+
+                            <a href="{% url 'account:user_signup' %}"><i class="fas fa-sign-out-alt me-2 mr-1"></i>
+                                Signup</a>
+
+                            {% endif %}
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="logo-section" >
+    <div class="container-fluid">
+        <div class="row align-items-center" >
+            <div class="col-lg-3 col-6 d-flex justify-content-center align-items-center" >
+                <a href="/" class="logo-link">
+                    <span class="logo-text-dark">Online</span>
+                    <span class="logo-text-light">Shop</span>
+                </a>
+            </div>
+
+            <div class="col-lg-6 col-12 order-3 order-lg-2 mt-3 mt-lg-0 " >
+                <div class="search-section d-flex justify-content-center align-items-center">
+                    <form class="search-form" id="search-form" onsubmit="return false;">
+                        <input
+                                type="text"
+                                class="search-input"
+                                placeholder="What are you looking for?"
+                                id="live-search-input"
+                                data-url="{% url 'shop:live_search' %}"
+                                autocomplete="off"
+
+                        >
+                        <div class="search-results-container" id="search-results-container"></div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-3 d-none d-lg-block order-lg-3 d-flex justify-content-center align-items-center">
+                <div class="customer-service-info">
+                    <p class="service-label">Customer Service</p>
+                    <h5 class="service-phone">+98 933 980 4252</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Account Dropdown Toggle
+    const accountBtn = document.getElementById('accountBtn');
+    const accountMenu = document.getElementById('accountMenu');
+
+    if (accountBtn && accountMenu) {
+        accountBtn.addEventListener('click', function() {
+            accountMenu.classList.toggle('show');
+            this.setAttribute('aria-expanded', this.getAttribute('aria-expanded') === 'false' ? 'true' : 'false');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.account-dropdown')) {
+                accountMenu.classList.remove('show');
+                accountBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    }
+
+    // Search Functionality
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            const query = this.value.trim();
+
+            if (query.length > 0) {
+                // Simulate search results (replace with actual API call)
+                const mockResults = [
+                    { name: 'Product 1', category: 'Electronics' },
+                    { name: 'Product 2', category: 'Fashion' },
+                    { name: 'Product 3', category: 'Home' }
+                ].filter(item => item.name.toLowerCase().includes(query.toLowerCase()));
+
+                if (mockResults.length > 0) {
+                    searchResults.innerHTML = mockResults.map(result =>
+                        `<a href="#" class="search-result-item">
+                            <strong>${result.name}</strong>
+                            <small class="text-muted d-block">${result.category}</small>
+                        </a>`
+                    ).join('');
+                    searchResults.classList.add('show');
+                } else {
+                    searchResults.innerHTML = '<div style="padding: 1rem; color: #999;">No results found</div>';
+                    searchResults.classList.add('show');
+                }
+            } else {
+                searchResults.classList.remove('show');
+            }
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.search-form')) {
+                searchResults.classList.remove('show');
+            }
+        });
+    }
+</script>

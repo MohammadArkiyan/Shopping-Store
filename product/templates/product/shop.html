@@ -1,0 +1,254 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+{% block title %} Shop {% endblock title %}
+
+{% block body %}
+<!-- Breadcrumb Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <div class="col-12">
+            <nav class="breadcrumb bg-light mb-30">
+                <a class="breadcrumb-item text-dark" href="{% url 'shopping_store:index' %}">Home</a>
+                <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                <span class="breadcrumb-item active">Shop List</span>
+            </nav>
+        </div>
+    </div>
+</div>
+<!-- Breadcrumb End -->
+
+
+<!-- Shop Start -->
+<div class="container-fluid">
+    <div class="row px-xl-5">
+        <!-- Shop Sidebar Start -->
+        <div class="col-lg-3 col-md-4">
+            <!-- Price Start -->
+            <h5 class="section-title position-relative text-uppercase mt-3"><span class="bg-secondary pr-3">Filter by price</span>
+            </h5>
+
+            <div class="bg-light p-4 mb-30" style="margin-top: 19px;">
+
+                <form action="#" method="GET">
+
+                    <div class="row mb-3">
+                        <div class="col">
+                            <label for="minPrice" class="form-label">Min Price</label>
+                            <input type="number" class="form-control" id="minPrice" name="min"
+                                   value="{{ min_price }}">
+                        </div>
+                        <div class="col">
+                            <label for="maxPrice" class="form-label">Max Price</label>
+                            <input type="number" class="form-control" id="maxPrice" name="max"
+                                   value="{{ max_price }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="priceRange" class="form-label">Select Price Range</label>
+                        <input type="range" class="form-control" min="0" max="100000000" step="10000" id="priceRange">
+                        <div class="d-flex justify-content-between">
+                            <small id="rangeValue">Current: 50000000</small>
+                            <small>(0 - 100000000)</small>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">Apply Filter</button>
+
+                </form>
+            </div>
+            <!-- Price End -->
+
+            <!-- Color Start -->
+
+            <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by color</span>
+            </h5>
+            <form method="GET" id="ajaxFilterForm" data-shop-url="{% url 'shop:shop' %}">
+                <div class="bg-light p-4 mb-30">
+
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="color-1"
+                               name="color" value="Black" {% if "Black" in selected_colors %}checked{% endif %}>
+                        <label class="custom-control-label" for="color-1">Black</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="color-2"
+                               name="color" value="White" {% if "White" in selected_colors %}checked{% endif %}>
+                        <label class="custom-control-label" for="color-2">White</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="color-3"
+                               name="color" value="Red" {% if "Red" in selected_colors %}checked{% endif %}>
+                        <label class="custom-control-label" for="color-3">Red</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="color-4"
+                               name="color" value="Blue" {% if "Blue" in selected_colors %}checked{% endif %}>
+                        <label class="custom-control-label" for="color-4">Blue</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="color-5"
+                               name="color" value="Green" {% if "Green" in selected_colors %}checked{% endif %}>
+                        <label class="custom-control-label" for="color-5">Green</label>
+
+                    </div>
+
+                </div>
+                <!-- Color End -->
+
+                <!-- Size Start -->
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3">Filter by size</span>
+                </h5>
+                <div class="bg-light p-4 mb-30">
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="size-1"
+                               name="size" value="XS" {% if "XS" in selected_sizes %}checked{% endif %}>
+                        <label class="custom-control-label" for="size-1">XS</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="size-2"
+                               name="size" value="S" {% if "S" in selected_sizes %}checked{% endif %}>
+                        <label class="custom-control-label" for="size-2">S</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="size-3"
+                               name="size" value="M" {% if "M" in selected_sizes %}checked{% endif %}>
+                        <label class="custom-control-label" for="size-3">M</label>
+                        <!--                        <span class="badge border font-weight-normal">246</span>-->
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="size-4"
+                               name="size" value="L" {% if "L" in selected_sizes %}checked{% endif %}>
+                        <label class="custom-control-label" for="size-4">L</label>
+
+                    </div>
+                    <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
+                        <input type="checkbox" class="custom-control-input ajax-filter-checkbox" id="size-5"
+                               name="size" value="XL" {% if "XL" in selected_sizes %}checked{% endif %}>
+                        <label class="custom-control-label" for="size-5">XL</label>
+
+                    </div>
+
+                </div>
+            </form>
+            <!-- Size End -->
+        </div>
+        <!-- Shop Sidebar End -->
+
+
+        <!-- Shop Product Start -->
+        <div class="col-lg-9 col-md-8">
+            <div class="row pb-3">
+                <div class="col-12 pb-1">
+
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <div></div>
+
+                        <div class="ml-2">
+                            <div class="btn-group ml-2">
+                                <button type="button" class="btn btn-sm btn-light dropdown-toggle"
+                                        data-toggle="dropdown">Showing
+                                </button>
+
+                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <a href="{% url 'shop:shop' %}?per_page=10"
+                                       class="dropdown-item {% if per_page == 10 %} active {% endif %}">10</a>
+                                    <a href="{% url 'shop:shop' %}?per_page=20"
+                                       class="dropdown-item {% if per_page == 20 %} active {% endif %}">20</a>
+                                    <a href="{% url 'shop:shop' %}?per_page=30"
+                                       class="dropdown-item {% if per_page == 30 %} active {% endif %}">30</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% for product in page_obj %}
+                <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
+                    <div class="product-item bg-light mb-4">
+                        <div class="product-img position-relative overflow-hidden">
+                            <img class="img-fluid w-100" src="{{ product.get_main_image }}" alt="">
+                            <div class="product-action">
+                                <a class="btn btn-outline-dark btn-square" href="{% url 'shop:detail' product.id %}"><i
+                                        class="fa fa-shopping-cart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="far fa-heart"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-sync-alt"></i></a>
+                                <a class="btn btn-outline-dark btn-square" href=""><i class="fa fa-search"></i></a>
+                            </div>
+                        </div>
+                        <div class="text-center py-4">
+                            <a class="h6 text-decoration-none text-truncate" href="{% url 'shop:detail' product.id %}">
+                                {{ product.title }}</a>
+                            <div class="d-flex align-items-center justify-content-center mt-2">
+                                <h5>{{ product.product_price_processor|floatformat:"0"|intcomma }}ᴛᴏᴍᴀɴ</h5>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="col-12">
+                    <nav>
+                        {% if page_obj.has_other_pages %}
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                            <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</span></a>
+                            </li>
+                            {% endif %}
+
+                            {% for i in paginator.page_range %}
+                            {% if page_obj.number == i %}
+                            <li class="page-item-active"><a class="page-link" href="#">{{ i }}</a></li>
+                            {% else %}
+                            <li class="page-item"><a class="page-link" href="?page={{ i }}">{{ i }}</a></li>
+                            {% endif %}
+                            {% endfor %}
+
+
+                            {% if page_obj.has_next %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?page={{ page_obj.next_page_number }}">Next</a></li>
+                            {% endif %}
+                        </ul>
+                        {% endif %}
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+        <!-- Shop Product End -->
+    </div>
+</div>
+<!-- Shop End -->
+
+<!-- Start js for color and size forms -->
+<script>
+
+    document.querySelectorAll('#colorForm input[type=checkbox]')
+      .forEach(el => {
+        el.addEventListener('change', () => {
+          el.form.submit();
+        });
+      });
+
+    document.querySelectorAll('#sizeForm input[type=checkbox]')
+      .forEach(el => {
+        el.addEventListener('change', () => {
+          el.form.submit();
+        });
+      });
+</script>
+<!-- End js for color and size forms -->
+
+{% endblock body %}
+
