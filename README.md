@@ -8,6 +8,219 @@
 
 ---
 
+<a id="english"></a>
+## English
+
+A complete, fully functional online shopping platform built with **Django** on the backend and **HTML, CSS, Bootstrap, jQuery, JavaScript** on the frontend.
+
+![Python](https://img.shields.io/badge/python-3.x-blue)
+![Django](https://img.shields.io/badge/django-framework-092E20?logo=django)
+![License](https://img.shields.io/badge/license-MIT-orange)
+![Status](https://img.shields.io/badge/status-completed-brightgreen)
+
+> 🎨 **Frontend Credit:** The frontend template used in this project is based on a design by [HTMLCodex](https://htmlcodex.com/). All rights to the original frontend design belong to HTMLCodex. Only custom modifications and personalization were applied to the frontend in this project — all backend logic, Django integration, and dynamic functionality were fully implemented by me.
+
+### 📋 Table of Contents
+- [About the Project](#-about-the-project)
+- [Features](#-features)
+- [Tech Stack](#-tech-stack)
+- [Project Structure](#-project-structure)
+- [Routes](#-routes)
+- [Installation](#-installation)
+- [Admin Panel](#-admin-panel)
+- [Technical Notes](#-technical-notes)
+- [Security](#-security)
+- [Credits](#-credits)
+- [License](#-license)
+- [Contact](#-contact)
+
+---
+
+### 📖 About the Project
+
+**Shopping Store** is a complete e-commerce platform built to demonstrate advanced web development concepts with Django. It offers product management, a smart shopping cart, order processing, user management, discount coupons, user reviews, and a fully responsive UI.
+
+---
+
+### ✨ Features
+
+#### Product Management
+- Add, edit, and delete products from the admin panel
+- Category management
+- Product listing with full details (name, price, description, images, category)
+- Filter products by price, size, and color (AJAX, no page refresh)
+- **Live Search** via AJAX — results appear once the search term is 2+ characters
+- Paginator to control the number of products shown per page
+
+#### Shopping Cart
+- Select products to purchase, with add/remove/edit quantity options
+- Cart stored in **Session** — for both guest and logged-in users
+- Guest users' cart items are automatically saved to the database upon login
+- Automatic total price calculation
+- Real-time (AJAX) update of cart item count in the Navbar, without page refresh
+- Real-time price updates when quantities change on the cart page
+
+#### Orders & Checkout
+- Order placement and user address management
+- Automatically pre-fills the Checkout form with the last used address (editable)
+- Order list view for both users and admin, with order status updates
+
+#### Users & Profile
+- Secure sign-up and login with password hashing
+- Profile editing: name, email, profile picture
+- Profile info displayed in the "My Account" section (visible only to logged-in users)
+
+#### Coupons
+- Create unique discount codes from the admin panel
+- Apply discount codes on the cart page with instant total recalculation
+- Expired coupons are rejected with an appropriate error message
+
+#### User Reviews
+- Users can leave a review on the product detail page (logged-in users only)
+- Reviews are shown publicly only after admin approval (via the *Publication Status* checkbox)
+
+#### Other
+- Contact form; messages are sent directly to the admin panel
+- Fully responsive design for mobile, tablet, and desktop
+- Dynamic homepage sections: **Categories**, **Featured Products**, and **Recent Products** (max 8 items)
+- Rotating vendor logo carousel powered by JavaScript
+
+---
+
+### 🛠 Tech Stack
+
+**Backend:**
+- Python
+- Django
+
+**Frontend:**
+- HTML5 / CSS3
+- Bootstrap
+- JavaScript / jQuery (AJAX for cart, filters, live search, etc.)
+- Base template by [HTMLCodex](https://htmlcodex.com/), with custom modifications
+
+**Database:**
+- SQLite (for development and testing)
+
+---
+
+### 📁 Project Structure
+
+```
+shoppingstore_project/
+├── manage.py                # Main Django management script
+├── db.sqlite3                # SQLite database
+├── requirements.txt           # Python dependencies
+├── static/                    # Static files (CSS, JS, images)
+├── media/                     # User-uploaded files
+├── templates/                  # Base template (shared across pages)
+│
+├── shoppingstore/               # Home page app
+├── account/                    # User app (signup, login, profile)
+├── product/                    # Products, categories, and product details
+├── cart/                       # Shopping cart app
+├── checkout/                   # Final order/checkout form app
+├── coupon/                     # Discount coupon app (on the cart page)
+└── contact/                    # Contact us app
+```
+
+---
+
+### 🔗 Routes
+
+| Section | URL | Description |
+|---|---|---|
+| Home | `/` | Homepage |
+| Login | `/account/login` | Login page |
+| Sign up | `/account/signup` | Registration page |
+| Profile | `/account/profile` | View and edit profile |
+| Cart | `/cart` | Shopping cart page |
+| Checkout | `/checkout` | Shipping/order details form |
+| Contact | `/contact` | Contact form |
+| Shop | `/shop` | Product listing, filters, and paginator |
+| Product Detail | `/shop/detail/<product_id>` | Product details + reviews section |
+| Admin Panel | `/admin` | Full site management |
+
+---
+
+### 🚀 Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/username/shopping-store.git
+cd shopping-store
+
+# 2. Create a virtual environment
+python -m venv venv
+source venv/bin/activate      # Windows: venv\Scripts\activate
+
+# 3. Install dependencies
+pip install -r requirements.txt
+
+# 4. Run migrations
+python manage.py migrate
+
+# 5. Create a superuser for admin panel access
+python manage.py createsuperuser
+
+# 6. Run the development server
+python manage.py runserver
+```
+
+The project will be available at:
+```
+http://127.0.0.1:8000
+```
+
+---
+
+### 🔑 Admin Panel
+
+Access the admin panel at:
+```
+http://127.0.0.1:8000/admin
+```
+
+> ⚠️ **Security note:** The `admin/admin` credentials are for the development environment only. Before deploying this project to production, make sure to create a superuser with a strong, unique username and password, and never commit login credentials to a public repository.
+
+From the admin panel you can fully manage products, categories, users, orders, discount coupons, and reviews.
+
+---
+
+### 📌 Technical Notes
+
+- The **Categories** section on the homepage only displays categories marked as *Featured* in the admin panel.
+- The **Featured Products** section only shows products with the *is_featured* field checked in the admin panel.
+- The **Recent Products** section displays the most recently added products (up to 8 items).
+- On the Checkout page, if a user has previously filled out the form, it is automatically pre-filled on subsequent visits (and remains editable). Saved addresses can be viewed under the *Addresses* section in the admin panel.
+
+---
+
+### 🔒 Security
+
+- User passwords are hashed using strong algorithms
+- Protection against **XSS** and **CSRF** attacks
+
+---
+
+### 🙏 Credits
+
+- **Frontend Design:** The base frontend template for this project was designed by [HTMLCodex](https://htmlcodex.com/). Only custom modifications and personalizations were made to this template in this project; all backend logic and Django development were carried out by me.
+
+---
+
+### 📄 License
+
+This project is licensed under the MIT License — see the LICENSE file for details. Note that the frontend template remains subject to the original license terms of [HTMLCodex](https://htmlcodex.com/).
+
+### 📬 Contact
+
+**Mohammad Arkian**
+
+If you have any questions or suggestions, feel free to reach out via the Issues tab of this repository, or through:
+- Email: mohammadarkiyan21@gmail.com
+- GitHub: https://github.com/MohammadArkiyan
+
 <a id="فارسی"></a>
 ## فارسی
 
@@ -229,218 +442,6 @@ http://127.0.0.1:8000/admin
 
 ---
 
-<a id="english"></a>
-## English
-
-A complete, fully functional online shopping platform built with **Django** on the backend and **HTML, CSS, Bootstrap, jQuery, JavaScript** on the frontend.
-
-![Python](https://img.shields.io/badge/python-3.x-blue)
-![Django](https://img.shields.io/badge/django-framework-092E20?logo=django)
-![License](https://img.shields.io/badge/license-MIT-orange)
-![Status](https://img.shields.io/badge/status-completed-brightgreen)
-
-> 🎨 **Frontend Credit:** The frontend template used in this project is based on a design by [HTMLCodex](https://htmlcodex.com/). All rights to the original frontend design belong to HTMLCodex. Only custom modifications and personalization were applied to the frontend in this project — all backend logic, Django integration, and dynamic functionality were fully implemented by me.
-
-### 📋 Table of Contents
-- [About the Project](#-about-the-project)
-- [Features](#-features)
-- [Tech Stack](#-tech-stack)
-- [Project Structure](#-project-structure)
-- [Routes](#-routes)
-- [Installation](#-installation)
-- [Admin Panel](#-admin-panel)
-- [Technical Notes](#-technical-notes)
-- [Security](#-security)
-- [Credits](#-credits)
-- [License](#-license)
-- [Contact](#-contact)
-
----
-
-### 📖 About the Project
-
-**Shopping Store** is a complete e-commerce platform built to demonstrate advanced web development concepts with Django. It offers product management, a smart shopping cart, order processing, user management, discount coupons, user reviews, and a fully responsive UI.
-
----
-
-### ✨ Features
-
-#### Product Management
-- Add, edit, and delete products from the admin panel
-- Category management
-- Product listing with full details (name, price, description, images, category)
-- Filter products by price, size, and color (AJAX, no page refresh)
-- **Live Search** via AJAX — results appear once the search term is 2+ characters
-- Paginator to control the number of products shown per page
-
-#### Shopping Cart
-- Select products to purchase, with add/remove/edit quantity options
-- Cart stored in **Session** — for both guest and logged-in users
-- Guest users' cart items are automatically saved to the database upon login
-- Automatic total price calculation
-- Real-time (AJAX) update of cart item count in the Navbar, without page refresh
-- Real-time price updates when quantities change on the cart page
-
-#### Orders & Checkout
-- Order placement and user address management
-- Automatically pre-fills the Checkout form with the last used address (editable)
-- Order list view for both users and admin, with order status updates
-
-#### Users & Profile
-- Secure sign-up and login with password hashing
-- Profile editing: name, email, profile picture
-- Profile info displayed in the "My Account" section (visible only to logged-in users)
-
-#### Coupons
-- Create unique discount codes from the admin panel
-- Apply discount codes on the cart page with instant total recalculation
-- Expired coupons are rejected with an appropriate error message
-
-#### User Reviews
-- Users can leave a review on the product detail page (logged-in users only)
-- Reviews are shown publicly only after admin approval (via the *Publication Status* checkbox)
-
-#### Other
-- Contact form; messages are sent directly to the admin panel
-- Fully responsive design for mobile, tablet, and desktop
-- Dynamic homepage sections: **Categories**, **Featured Products**, and **Recent Products** (max 8 items)
-- Rotating vendor logo carousel powered by JavaScript
-
----
-
-### 🛠 Tech Stack
-
-**Backend:**
-- Python
-- Django
-
-**Frontend:**
-- HTML5 / CSS3
-- Bootstrap
-- JavaScript / jQuery (AJAX for cart, filters, live search, etc.)
-- Base template by [HTMLCodex](https://htmlcodex.com/), with custom modifications
-
-**Database:**
-- SQLite (for development and testing)
-
----
-
-### 📁 Project Structure
-
-```
-shoppingstore_project/
-├── manage.py                # Main Django management script
-├── db.sqlite3                # SQLite database
-├── requirements.txt           # Python dependencies
-├── static/                    # Static files (CSS, JS, images)
-├── media/                     # User-uploaded files
-├── templates/                  # Base template (shared across pages)
-│
-├── shoppingstore/               # Home page app
-├── account/                    # User app (signup, login, profile)
-├── product/                    # Products, categories, and product details
-├── cart/                       # Shopping cart app
-├── checkout/                   # Final order/checkout form app
-├── coupon/                     # Discount coupon app (on the cart page)
-└── contact/                    # Contact us app
-```
-
----
-
-### 🔗 Routes
-
-| Section | URL | Description |
-|---|---|---|
-| Home | `/` | Homepage |
-| Login | `/account/login` | Login page |
-| Sign up | `/account/signup` | Registration page |
-| Profile | `/account/profile` | View and edit profile |
-| Cart | `/cart` | Shopping cart page |
-| Checkout | `/checkout` | Shipping/order details form |
-| Contact | `/contact` | Contact form |
-| Shop | `/shop` | Product listing, filters, and paginator |
-| Product Detail | `/shop/detail/<product_id>` | Product details + reviews section |
-| Admin Panel | `/admin` | Full site management |
-
----
-
-### 🚀 Installation
-
-```bash
-# 1. Clone the repository
-git clone https://github.com/username/shopping-store.git
-cd shopping-store
-
-# 2. Create a virtual environment
-python -m venv venv
-source venv/bin/activate      # Windows: venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Run migrations
-python manage.py migrate
-
-# 5. Create a superuser for admin panel access
-python manage.py createsuperuser
-
-# 6. Run the development server
-python manage.py runserver
-```
-
-The project will be available at:
-```
-http://127.0.0.1:8000
-```
-
----
-
-### 🔑 Admin Panel
-
-Access the admin panel at:
-```
-http://127.0.0.1:8000/admin
-```
-
-> ⚠️ **Security note:** The `admin/admin` credentials are for the development environment only. Before deploying this project to production, make sure to create a superuser with a strong, unique username and password, and never commit login credentials to a public repository.
-
-From the admin panel you can fully manage products, categories, users, orders, discount coupons, and reviews.
-
----
-
-### 📌 Technical Notes
-
-- The **Categories** section on the homepage only displays categories marked as *Featured* in the admin panel.
-- The **Featured Products** section only shows products with the *is_featured* field checked in the admin panel.
-- The **Recent Products** section displays the most recently added products (up to 8 items).
-- On the Checkout page, if a user has previously filled out the form, it is automatically pre-filled on subsequent visits (and remains editable). Saved addresses can be viewed under the *Addresses* section in the admin panel.
-
----
-
-### 🔒 Security
-
-- User passwords are hashed using strong algorithms
-- Protection against **XSS** and **CSRF** attacks
-
----
-
-### 🙏 Credits
-
-- **Frontend Design:** The base frontend template for this project was designed by [HTMLCodex](https://htmlcodex.com/). Only custom modifications and personalizations were made to this template in this project; all backend logic and Django development were carried out by me.
-
----
-
-### 📄 License
-
-This project is licensed under the MIT License — see the LICENSE file for details. Note that the frontend template remains subject to the original license terms of [HTMLCodex](https://htmlcodex.com/).
-
-### 📬 Contact
-
-**Mohammad Arkian**
-
-If you have any questions or suggestions, feel free to reach out via the Issues tab of this repository, or through:
-- Email: mohammadarkiyan21@gmail.com
-- GitHub: https://github.com/MohammadArkiyan
 
 <div align="right">
 
