@@ -226,6 +226,7 @@ If you have any questions or suggestions, feel free to reach out via the Issues 
 [⬆ Back to top](#shopping-store)
 
 </div>
+
 ---
 
 <a id="فارسی"></a>
@@ -446,5 +447,3 @@ http://127.0.0.1:8000/admin
 [⬆ بازگشت به بالا](#shopping-store)
 
 </div>
-
----
