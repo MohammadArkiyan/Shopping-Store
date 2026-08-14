@@ -1,19 +1,28 @@
 import os.path
 from pathlib import Path
 
+import environ
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+# django-environ: reads variables from the environment (and from a .env
+# file if present, mainly useful for local/non-docker runs).
+env = environ.Env(
+    DEBUG=(bool, False),
+)
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&ju+!xgnjxuwt3$l7n8*yk46-n9))9zk*$7)wl1a5n7rqx$72_'
+SECRET_KEY = env('SECRET_KEY', default='django-insecure-&ju+!xgnjxuwt3$l7n8*yk46-n9))9zk*$7)wl1a5n7rqx$72_')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list('ALLOWED_HOSTS', default=['localhost', '127.0.0.1'])
 
 # Application definition
 
@@ -40,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -78,8 +88,12 @@ WSGI_APPLICATION = 'shoppingstore_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': env('POSTGRES_DB', default='shoppingstore'),
+        'USER': env('POSTGRES_USER', default='shoppingstore'),
+        'PASSWORD': env('POSTGRES_PASSWORD', default='shoppingstore'),
+        'HOST': env('POSTGRES_HOST', default='db'),
+        'PORT': env('POSTGRES_PORT', default='5432'),
     }
 }
 
@@ -121,6 +135,18 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+# where `collectstatic` gathers everything to be served (used inside Docker).
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STORAGES = {
+    'staticfiles': {
+        # Some CSS in this project (Font Awesome) references font files that
+        # are missing from the repo's static/ folder. The Manifest storage
+        # fails collectstatic on any missing referenced file, so we use the
+        # plain Compressed storage instead: it still gzips/brotli-compresses
+        # assets, it just doesn't hash filenames or hard-fail on broken refs.
+        'BACKEND': 'whitenoise.storage.CompressedStaticFilesStorage',
+    },
+}
 
 # Media files (Products, Profiles, Banners)
 MEDIA_URL = '/media/'
