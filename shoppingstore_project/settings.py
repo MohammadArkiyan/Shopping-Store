@@ -168,6 +168,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CART_SESSION_ID = 'cart'
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://example.com",
-    "https://www.example.com",
+    "https://firstlearn.ir",
+    "https://www.firstlearn.ir",
 ]
