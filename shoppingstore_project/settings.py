@@ -138,6 +138,13 @@ STATICFILES_DIRS = [
 # where `collectstatic` gathers everything to be served (used inside Docker).
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STORAGES = {
+    # Storage used for user-uploaded files (profile images, product photos,
+    # etc. — anything saved through a FileField/ImageField). Overriding
+    # STORAGES requires specifying this explicitly, otherwise Django can't
+    # find a "default" backend and raises InvalidStorageError.
+    'default': {
+        'BACKEND': 'django.core.files.storage.FileSystemStorage',
+    },
     'staticfiles': {
         # Some CSS in this project (Font Awesome) references font files that
         # are missing from the repo's static/ folder. The Manifest storage
