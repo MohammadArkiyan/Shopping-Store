@@ -19,5 +19,6 @@ urlpatterns = [
 # Media is always served by Django here since this project has no separate
 # reverse proxy (e.g. nginx) in front of it. Static files are handled by
 # WhiteNoise instead (see MIDDLEWARE / STORAGES in settings.py).
-if not settings.DEBUG:
+if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
