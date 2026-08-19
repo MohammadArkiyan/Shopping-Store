@@ -15,8 +15,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python deps first for better layer caching
+# Using ParsPack's PyPI mirror instead of the default PyPI, since direct
+# access to pypi.org from this server is unstable/slow.
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir \
+    --index-url https://mirror.abrha.net/repository/pypi/simple \
+    --trusted-host mirror.abrha.net \
+    -r requirements.txt
 
 # Copy project source
 COPY . .
