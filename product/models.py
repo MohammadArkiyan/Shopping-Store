@@ -7,7 +7,7 @@ class Category(models.Model):
     """ A category that include some products. """
 
     title = models.CharField(max_length=200, verbose_name='title')
-    image = models.ImageField(upload_to='images/categories', null=True, blank=True, verbose_name='image')
+    image = models.ImageField(upload_to='images/categories', verbose_name='image')
     is_featured = models.BooleanField(default=False, verbose_name='featured', help_text='Is this a featured category?')
     date_added = models.DateField(auto_now_add=True, verbose_name='date added')
 
