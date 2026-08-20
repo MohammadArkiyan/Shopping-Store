@@ -126,7 +126,11 @@
             <a class="text-decoration-none" href="">
                 <div class="cat-item d-flex align-items-center mb-4">
                     <div class="overflow-hidden" style="width: 100px; height: 100px;">
+                        {% if category.image %}
                         <img class="img-fluid" src="{{ category.image.url }}" alt="{{ category.title }}">
+                        {% else %}
+                        <img src="{% static 'img/placeholder.png' %}" alt="...">
+                        {% endif %}
                     </div>
                     <div class="flex-fill pl-3">
                         <h6>{{ category.title }}</h6>
