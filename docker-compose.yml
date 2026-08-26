@@ -16,6 +16,7 @@ services:
 
   web:
     image: diyaraserv/shopping-store-web:latest
+    pull_policy: always
     restart: unless-stopped
     env_file:
       - .env
@@ -33,6 +34,7 @@ services:
 
   nginx:
     image: diyaraserv/shopping-store-nginx:latest
+    pull_policy: always
     restart: unless-stopped
     volumes:
       - static_data:/app/staticfiles:ro
