@@ -15,7 +15,7 @@ services:
       retries: 5
 
   web:
-    image: ghcr.io/mohammadarkiyan/shopping-store-web:latest
+    image: diyaraserv/shopping-store-web:latest
     restart: unless-stopped
     env_file:
       - .env
@@ -32,7 +32,7 @@ services:
         condition: service_healthy
 
   nginx:
-    image: ghcr.io/mohammadarkiyan/shopping-store-nginx:latest
+    image: diyaraserv/shopping-store-nginx:latest
     restart: unless-stopped
     volumes:
       - static_data:/app/staticfiles:ro
